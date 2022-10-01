@@ -1,0 +1,218 @@
+'''
+1. Вывод на экран меню
+2. Выбор из списка напитков
+3. Выбор объема из списка
+4. Выбор количества сахара 
+5. Выбор добавок
+6. Расчет суммы
+'''
+
+
+from typing import Literal
+
+
+def get_coffee_order():
+    drink_dict = {
+        'бургер': {
+            200: 100,
+            300: 150,
+            400: 200
+        },
+        'картошка фри': {
+            200: 80,
+            300: 100,
+            400: 120
+        },
+        'крылышки': {
+            200: 120,
+            300: 170,
+            400: 220
+        },
+    }
+
+    add_dict = {
+        'кетчуп': 5,
+        'горчица': 20,
+        'майонез': 10,
+        'ничего': 0
+    }
+
+def get_burger() -> Literal['бургер', 'картошка фри', 'крылышки'] | None:
+    """Функция, которая выводит на экран список Macdonas и просит сделать выбор.
+    Returns:
+    Literal['бургер', 'картошка фри', 'крылышки'] | None: выбранный меню или "отмена"
+    """
+    while True:
+         
+        user_choose = input(
+                'Привет!\nВыбери меню:\n1.Бургер\n2.Картошка фри\n3.Крылышки\n4.Выход\n')
+        if user_choose == '1':
+            return 'бургер'
+        elif user_choose == '2':
+            return 'картошка фри'
+        elif user_choose == '3':
+            return 'крылышки'
+        elif user_choose == '4':
+            return None
+        else:
+            print('Введи число от 1 до 4')
+            
+def get_add_burger():
+    """Функция, которая выводит на экран список добавок и просит сделать выбор.
+    Returns:
+    list | None: выбранная добавка или "отмена"
+    """
+        
+    user_choose = input(
+        '\nВыбери соус:\n1.Кетчуп\n2.Горчица\n3.Майонез\n4.Не нужно(Хватит)\n5.Выход\n')
+    if user_choose == '1':
+         return 'кетчуп'
+    elif user_choose == '2':
+         return 'горчица'
+    elif user_choose == '3':
+         return  'майонез'
+    elif user_choose == '4':
+        return 'не нужно'
+    elif user_choose == '5':
+        return None
+    else:
+        print('Введи число от 1 до 4')
+                
+def get_napitki():
+    while True:
+                         
+        user_choose = input(
+                '\nВыбери напиток:\n1.Кола\n2.фанта\n3.pepsi\n4.Выход\n')
+        if user_choose == '1':
+            return 'кола'
+        elif user_choose == '2':
+            return 'фанта'
+        elif user_choose == '3':
+            return 'pepsi'
+        elif user_choose == '4':
+            return None
+        else:
+            print('Введи число от 1 до 4')
+
+def get_volume():
+    """Функция, которая выводит на экран список объемов и просит сделать выбор.
+    Returns:
+    Literal[200, 300, 400] | None: выбранный объем или "отмена"
+    """
+    while True:
+        
+        user_choose = input(
+                'Выбери объем напитка:\n1.200мл\n2.300мл\n3.400мл\n4.Выход\n')
+        if user_choose == '1':
+            return 200
+        elif user_choose == '2':
+            return 300
+        elif user_choose == '3':
+            return 400
+        elif user_choose == '4':
+            return None
+        else:
+            print('Введи число от 1 до 4')
+
+def get_sugar():
+    """Функция, которая просит выбрать количество сахара (от 0 до 5)
+    Returns:
+    int: количество сахара
+    """
+    while True:
+            
+        user_choose = input(
+            'Выбери количество сахара от 0 до 5 или "выход": ')
+        if user_choose == 'выход':
+            return None
+
+        try:
+            user_choose = int(user_choose)
+        except:
+            print('Вы должны ввести число!')
+        else:
+            try:
+                assert user_choose in range(
+                    0, 5+1), 'Количество сахара должно быть в диапазоне от 0 до 5'
+                return user_choose
+            except AssertionError as ex:
+                print(ex)
+
+def get_add():
+    """Функция, которая выводит на экран список добавок и просит сделать выбор.
+    Returns:
+    list | None: выбранная добавка или "отмена"
+    """
+        
+    add_list =[]
+        
+    while True:
+        user_choose = input(
+            '\nВыбери добавку:\n1.Лимон\n2.Молоко\n3.Корица\n4.Не нужно(Хватит)\n5.Выход\n')
+        if user_choose == '1':
+            add_list.append('лимон')
+        elif user_choose == '2':
+            add_list.append('молоко')
+        elif user_choose == '3':
+            add_list.append('корица')
+        elif user_choose == '4':
+            return add_list
+        elif user_choose == '5':
+            return None
+        else:
+            print('Введи число от 1 до 4')
+
+def calculate_sum(drink: str, volume: int, sugar: int, add_list: str):
+    """Функция, которая генерирует финальный заказ
+    Args:
+        drink (str): выбранынй напиток
+        volume (int): объем
+        sugar (int): количество сахара
+        add (str): добавки
+    Returns:
+        _type_: счет
+    """
+    # цена напитка в зависимости от объема
+    drink_sum = drink_dict[drink][volume]
+        
+    add_sum = 0
+    for add in add_list:
+        add_sum += add_dict[add]
+
+    return {
+        'drink': drink,
+        'volume': volume,
+        'sugar': sugar,
+        'drink_sum': drink_sum,
+        'add_sum': add_sum,
+        'result': drink_sum + add_sum
+    }
+
+    order =get_coffee_order()
+    if order is None:
+        return None
+        
+    drink = get_drink()
+    if drink is None:
+        return None
+
+    volume = get_volume()
+    if volume is None:
+        return None
+
+    sugar = get_sugar()
+    if sugar is None:
+        return None
+
+    add = get_add()
+    if add is None:
+        return None
+
+    return calculate_sum(drink=drink, volume=volume, sugar=sugar, add_list=add)
+
+burger = get_burger()
+add_burger = get_add_burger()
+drink = get_napitki()
+volume = get_volume()
+sugar = get_sugar()
+add = get_add()
